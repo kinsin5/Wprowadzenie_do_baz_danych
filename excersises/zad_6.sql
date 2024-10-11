@@ -43,5 +43,32 @@ VALUES
 ('75021800123','Adam','Nowak','1975-02-20'), -- day != pesel
 ('75021800123','Adam','Nowak','1975-02-18') -- not unique pesel,
 --8.
-
+CREATE TABLE faktury (
+	numer SERIAL,
+	PESEL CHAR(11),
+	KWOTA DECIMAL(8,2),
+	PRIMARY KEY(numer),
+	FOREIGN KEY(PESEL) REFERENCES osoby(PESEL)
+);
+--9.
+INSERT INTO faktury (pesel,kwota)
+VALUES
+--('39090100001', 123.45)
+--('39090199999', 123.45) -- there is no pesel in osoby 
+--('39090100001', 123456789) -- numer is longer than 8 digits
+--('75021800123')
+--(1,'39090100001', 123.45) -- 1: primary key already exists 
+--10.
+SELECT * FROM faktury;
+--11.
+SELECT numer, COALESCE(kwota, 0) 
+ FROM faktury;
+--12.
+SELECT numer, pesel FROM faktury
+WHERE kwota IS NULL;
+--13.
+DELETE FROM osoby 
+WHERE imie = 'Jan'; --you cannot delete record 
+--that is used by another relation as foreign key
+--14.
 
