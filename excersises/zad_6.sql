@@ -71,4 +71,77 @@ DELETE FROM osoby
 WHERE imie = 'Jan'; --you cannot delete record 
 --that is used by another relation as foreign key
 --14.
+UPDATE faktury SET pesel = '39090111111'
+WHERE pesel = (
+	SELECT PESEL FROM osoby
+	WHERE imie = 'Jan'
+);--WE cannot do that because it violates foreign key constrain 
+--meaning this new pesel doesn't exist in osoby 
+--15.
+DROP TABLE osoby;
+--16.
+DROP TABLE faktury;
+--17.
+/* SELECT column_name, data_type, character_maximum_length
+FROM information_schema.columns
+WHERE table_name = 'filmy'; viewing schema of table filmy*/
+CREATE TABLE moje_filmy (
+	id_filmu SERIAL,
+	tytul varchar(40) NOT NULL,
+	rok_produkcji INT,
+	cena REAL
+);
+--18.
+INSERT INTO moje_filmy (id_filmu, tytul, rok_produkcji, cena)
+SELECT * FROM filmy
+WHERE rok_produkcji < 1990;
+---
+SELECT * FROM moje_filmy;
+--19.
+DROP TABLE filmy;
+--20.
+CREATE TABLE filmy (
+	id_filmu SERIAL,
+	tytul varchar(40) NOT NULL,
+	rok_produkcji INT,
+	cena REAL,
+	cena_euro REAL
+);
+/*SELECT column_name, data_type, character_maximum_length
+FROM information_schema.columns
+WHERE table_name = 'filmy'; */
+--21.
+UPDATE filmy SET cena_euro = cena/4;
+--SELECT * FROM filmy;
+--22.
+ALTER TABLE filmy 
+RENAME COLUMN cena_euro
+TO euro_cena;
+--23.
+ALTER TABLE filmy
+DROP COLUMN euro_cena;
+--24.
+INSERT INTO filmy (id_filmu, tytul)
+VALUES 
+(11, 'Vabank');
+--25.
+SELECT tytul FROM filmy
+WHERE rok_produkcji IS NULL;
+--26.
+SELECT tytul, COALESCE(cena, 0)
+FROM filmy;
+--27.
+DELETE FROM filmy
+WHERE rok_produkcji IS NULL
+	AND cena IS NULL;
+
+
+
+
+
+
+
+
+
+
 
