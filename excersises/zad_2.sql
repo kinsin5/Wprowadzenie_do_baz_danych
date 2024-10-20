@@ -24,12 +24,17 @@ NATURAL JOIN kopie
 NATURAL JOIN wypozyczenia 
 NATURAL JOIN klienci 
 WHERE nazwisko = 'Kowalski';
---z7
+--z7 --subquery
 SELECT nazwisko FROM wypozyczenia
 NATURAL JOIN klienci 
 WHERE data_wypozyczenia = (
 	SELECT MIN(data_wypozyczenia) FROM wypozyczenia
-);
+); 
+--z7 -- without subquery
+SELECT nazwisko FROM wypozyczenia
+NATURAL JOIN klienci
+ORDER BY data_wypozyczenia ASC
+LIMIT 1;
 --z8
 SELECT nazwisko FROM obsada
 NATURAL JOIN aktorzy 
@@ -60,11 +65,10 @@ SELECT DISTINCT(tytul) FROM wypozyczenia
 NATURAL JOIN kopie 
 NATURAL JOIN filmy
 WHERE data_wypozyczenia BETWEEN '2005-07-15' AND '2005-07-25';
---z13
+--z13 --NATURAL JOIN
 SELECT klienci.imie, klienci.nazwisko, aktorzy.nazwisko FROM klienci
 CROSS JOIN aktorzy
 WHERE klienci.imie = aktorzy.imie;
-
---z13
+--z13 --NORMAL INNTER JOIN
 SELECT klienci.imie, klienci.nazwisko, aktorzy.nazwisko FROM klienci
 JOIN aktorzy ON klienci.imie = aktorzy.imie;
